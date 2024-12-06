@@ -1,12 +1,19 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "NodeJS" // Replace with the NodeJS name from Jenkins Global Tool Configuration
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Install Node.js (If Required)') {
+            steps {
+                sh '''
+                curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+                sudo apt-get install -y nodejs
+                node -v
+                npm -v
+                '''
+            }
+        }
+
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/noormohsin0626/my-node-app.git'
             }
@@ -45,3 +52,4 @@ pipeline {
         }
     }
 }
+
